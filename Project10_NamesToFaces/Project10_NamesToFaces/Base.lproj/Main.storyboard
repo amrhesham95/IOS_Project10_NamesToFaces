@@ -24,7 +24,7 @@
                             <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Person" id="jcA-4M-Qzq">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Person" id="jcA-4M-Qzq" customClass="PersonCell" customModule="Project10_NamesToFaces" customModuleProvider="target">
                                 <rect key="frame" x="10" y="10" width="140" height="180"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -51,6 +51,10 @@
                                     <constraint firstItem="lyS-Ih-7S9" firstAttribute="trailing" secondItem="cjT-17-Ebe" secondAttribute="trailing" id="fre-UZ-dZh"/>
                                     <constraint firstItem="lyS-Ih-7S9" firstAttribute="top" secondItem="cjT-17-Ebe" secondAttribute="bottom" constant="10" id="xPz-9O-mbb"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="personImageView" destination="cjT-17-Ebe" id="9HE-Df-kkm"/>
+                                    <outlet property="personNameLabel" destination="lyS-Ih-7S9" id="d2n-Kd-J17"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
