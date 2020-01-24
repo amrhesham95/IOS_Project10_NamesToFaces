@@ -9,20 +9,23 @@
 import UIKit
 
 class ViewController: UICollectionViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
-
+    var people = [Person]()
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewPerson))
         // Do any additional setup after loading the view.
     }
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return people.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Person", for: indexPath) as? PersonCell else{
             fatalError("Unable to dequeue PersonCell")
         }
+        let person = people[indexPath.item]
+        cell.personNameLabel.text = person.name
+        cell.personImageView.image = UIImage(contentsOfFile: getDocumentDirectory().appendingPathComponent(person.image).path)
         return cell
     }
     @objc func addNewPerson() {
@@ -42,7 +45,9 @@ class ViewController: UICollectionViewController,UIImagePickerControllerDelegate
         if let jpgData = image.jpegData(compressionQuality: 0.8){
             try? jpgData.write(to: imagePath)
         }
-        
+        let person = Person(name: "person\(people.count)", image: imageUniqueName)
+        people.append(person)
+        collectionView.reloadData()
         dismiss(animated: true)
     }
     
