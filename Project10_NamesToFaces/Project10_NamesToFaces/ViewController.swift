@@ -10,9 +10,11 @@ import UIKit
 
 class ViewController: UICollectionViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     var people = [Person]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewPerson))
+        load()
         // Do any additional setup after loading the view.
     }
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -53,6 +55,7 @@ class ViewController: UICollectionViewController,UIImagePickerControllerDelegate
             
             
             self?.people[indexPath.row].name = newName
+            self?.save()
             self?.collectionView.reloadData()
         })
         
@@ -60,6 +63,7 @@ class ViewController: UICollectionViewController,UIImagePickerControllerDelegate
             // to save the text coming from the textfield to the array and then refresh the collection view to see the effect
             [weak self,weak ac] _ in
             self?.people.remove(at: indexPath.row)
+            
             self?.collectionView.reloadData()
         })
         ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
@@ -87,6 +91,7 @@ class ViewController: UICollectionViewController,UIImagePickerControllerDelegate
         //creating person object after we have chosen a picture for him
         let person = Person(name: "person\(people.count)", image: imageUniqueName)
         people.append(person)
+        self.save()
         collectionView.reloadData()
         dismiss(animated: true)
     }
@@ -97,6 +102,25 @@ class ViewController: UICollectionViewController,UIImagePickerControllerDelegate
         
         // we got the value of the first element as the paths returned from the method contained only one element
         return Paths[0]
+    }
+    
+    func save(){
+        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: people, requiringSecureCoding: false)else {
+            return
+        }
+        let userDefaults = UserDefaults.standard
+        userDefaults.set(data,forKey:"people")
+    }
+    
+    func load(){
+        let userDefaults = UserDefaults.standard
+        if let data = userDefaults.object(forKey: "people") as? Data{
+            if let decodedPpl = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as?[Person]{
+                people = decodedPpl
+            }
+                    
+        }
+       
     }
     
     
